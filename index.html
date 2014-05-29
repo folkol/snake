@@ -39,16 +39,17 @@
 		setTimeout(tick, 1000 / snake.speed);
 	}
 	var turn = function(dx, dy) {
-		snake.direction = [dx, dy];
+		if(paused === false) snake.direction = [dx, dy];
 	}
 	var resetGame = function() {
 		$("#gamefield div").remove();
+		$("#gamefield p.instruction").remove();
 		snake = {
 			pos: [12, 25],
 			dx: 0,
 			dy: -1,
 			direction: [0, -1],
-			size: 7,
+			size: 20,
 			segments: [],
 			speed: 10
 		}
@@ -92,7 +93,6 @@
 	};
 
 	$(document).keydown(handleInput);
-	$(resetGame);
 	$(tick);
 	</script>
 </head>
@@ -100,6 +100,7 @@
 	<div id="distance"></div>
 	<div id="gamefield">
 		<p class="heading">Snake in a plane</p>
+		<p class="instruction">Press SPACE</p>
 </div>
 </body>
 </html>
