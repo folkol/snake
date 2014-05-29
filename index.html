@@ -15,6 +15,7 @@
 	var countingDown = false;
 	var numApples = 3;
 	var score = 0;
+	var gameover = true;
 
 	var modulo = function(n, m) {
 		return ((n % m) + m) % m;
@@ -32,12 +33,16 @@
 			var apple = $(apples[x]);
 			if(apple.css('left') === segment.css('left') &&
 			   apple.css('top') === segment.css('top')) {
-				score += 1;
+				score += 1000;
+				snake.size += 5;
 				apple.remove();
 				apples.splice(x, 1);
 			}
 		}
-		if(apples.length === 0) alert('won!');
+		if(apples.length === 0) {
+			paused = true;
+			alert('won!');
+		}
 		snake.segments.push(segment);
 
 		if(snake.segments.length > snake.size) {
@@ -75,9 +80,14 @@
 			apples.push(apple);
 		}
 
-		countDown();
-		paused = true;
-		setTimeout(function() { paused = false; countingDown = false; }, 5000);
+		if(gameover === true) {
+			countDown();
+			paused = true;
+			setTimeout(function() { paused = false; countingDown = false; }, 5000);
+			gameover = false;
+		} else {
+			paused = false;
+		}
 	}
 	var handleInput = function(event) {
 		switch(event.which) {
@@ -94,7 +104,9 @@
 				if(snake.dx != 1) turn(-1, 0);
 			break;
 			case 32:
-				if(countingDown != true) resetGame();
+				if(countingDown != true) {
+					resetGame();
+				}
 			break;
 			default:
 			var x = event.which - 48; // Debug
