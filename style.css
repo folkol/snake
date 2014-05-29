@@ -81,8 +81,9 @@ body {
 	color: white;
 	text-shadow: 1px 1px 3px black;
 	z-index: 1;
-	background-color: rgba(0,0,0,0.8);
-	-webkit-animation: fadeout 0.6s;
+	background-color: rgba(0, 0, 0, 0.8);
+	-webkit-animation: fadeout 2.6s;
+	animation: fadeout 2.6s;
 }
 
 p#one {

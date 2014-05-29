@@ -9,11 +9,19 @@
 	var CELL_SIZE = 20;
 	var GAMEFIELD_SIZE = 25;
 
-	var snake = {};
+	var snake = {
+		pos: [12, 25],
+		dx: 0,
+		dy: -1,
+		direction: [0, -1],
+		size: 5,
+		segments: [],
+		speed: 3
+	}
 	var apples = [];
 	var paused = true;
 	var countingDown = false;
-	var numApples = 1;
+	var numApples = 2;
 	var score = 0;
 	var gameover = true;
 
@@ -34,7 +42,7 @@
 			if(apple.css('left') === segment.css('left') &&
 			   apple.css('top') === segment.css('top')) {
 				score += 1000;
-				snake.size += 5;
+				snake.size += 1;
 				apple.remove();
 				apples.splice(x, 1);
 			}
@@ -62,15 +70,12 @@
 	var resetGame = function() {
 		$("#gamefield div").remove();
 		$("#gamefield p.instruction").remove();
-		snake = {
-			pos: [12, 25],
-			dx: 0,
-			dy: -1,
-			direction: [0, -1],
-			size: 20,
-			segments: [],
-			speed: 10
-		};
+		snake.pos = [12, 25];
+		snake.dx = 0;
+		snake.dy = -1;
+		snake.direction = [0, -1];
+		snake.speed += 1;
+		numApples += 1;
 
 		for(var x = 0; x < numApples; x++) {
 			var apple = $('<div class="apple"></div>');
@@ -90,6 +95,9 @@
 		}
 	}
 	var handleInput = function(event) {
+		if(paused && countingDown !== true) {
+			resetGame();
+		}
 		switch(event.which) {
 			case 38: // Up
 				if(snake.dy != 1) turn(0, -1);
@@ -103,11 +111,6 @@
 			case 37: // Left
 				if(snake.dx != 1) turn(-1, 0);
 			break;
-			case 32:
-				if(countingDown != true) {
-					resetGame();
-				}
-			break;
 			default:
 			var x = event.which - 48; // Debug
 			if(x > 0 && x < 10) {
@@ -115,7 +118,6 @@
 			}
 
 		}
-		hasMoved = true;
 	}
 	var countDown = function() {
 		countingDown = true;
@@ -134,7 +136,7 @@
 	<div id="distance"></div>
 	<div id="gamefield">
 		<p class="heading">Snake in a plane</p>
-		<p class="instruction">Press SPACE</p>
+		<p class="instruction">Press any key</p>
 </div>
 </body>
 </html>
