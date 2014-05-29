@@ -10,6 +10,8 @@
 	var GAMEFIELD_SIZE = 25;
 
 	var snake = {};
+	
+
 	var modulo = function(n, m) {
 		return ((n % m) + m) % m;
 	}
@@ -44,6 +46,7 @@
 			segments: [],
 			speed: 10
 		}
+		countDown();
 	}
 	var handleInput = function(event) {
 		switch(event.which) {
@@ -71,11 +74,16 @@
 		}
 		hasMoved = true;
 	}
-	var countDown = function(){};
+	var countDown = function() {
+		$('#gamefield p.countdown').remove();
+		$('#gamefield').append('<p class="countdown" id="three">3</p>');
+		$('#gamefield').append('<p class="countdown" id="two">2</p>');
+		$('#gamefield').append('<p class="countdown" id="one">1</p>');
+		$('#gamefield').append('<p class="countdown" id="go">GO!</p>');
+	};
 
 	$(document).keydown(handleInput);
-	resetGame();
-	countDown();
+	$(resetGame);
 	setTimeout(tick, 5000);
 	</script>
 </head>
@@ -83,10 +91,6 @@
 	<div id="distance"></div>
 	<div id="gamefield">
 		<p class="heading">Snake in a plane</p>
-		<p class="countdown" id="three">3</p>
-		<p class="countdown" id="two">2</p>
-		<p class="countdown" id="one">1</p>
-		<p class="countdown" id="go">GO!</p>
-	</div>
+</div>
 </body>
 </html>
