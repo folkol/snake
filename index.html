@@ -13,7 +13,7 @@
 	var apples = [];
 	var paused = true;
 	var countingDown = false;
-	var numApples = 3;
+	var numApples = 1;
 	var score = 0;
 	var gameover = true;
 
@@ -41,7 +41,7 @@
 		}
 		if(apples.length === 0) {
 			paused = true;
-			alert('won!');
+			$('#gamefield').append('<p class="instruction">Stage clear!</p>')
 		}
 		snake.segments.push(segment);
 
@@ -70,7 +70,7 @@
 			size: 20,
 			segments: [],
 			speed: 10
-		}
+		};
 
 		for(var x = 0; x < numApples; x++) {
 			var apple = $('<div class="apple"></div>');
