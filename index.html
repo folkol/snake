@@ -14,6 +14,7 @@
 	var paused = true;
 	var countingDown = false;
 	var numApples = 3;
+	var score = 0;
 
 	var modulo = function(n, m) {
 		return ((n % m) + m) % m;
@@ -27,6 +28,16 @@
 		var segment = $('<div class="segment"></div>');
 		segment.css({top: snake.pos[1] * CELL_SIZE, left: snake.pos[0] * CELL_SIZE});
 		$('#gamefield').append(segment);
+		for(var x = apples.length - 1; x >= 0; x--) {
+			var apple = $(apples[x]);
+			if(apple.css('left') === segment.css('left') &&
+			   apple.css('top') === segment.css('top')) {
+				score += 1;
+				apple.remove();
+				apples.splice(x, 1);
+			}
+		}
+		if(apples.length === 0) alert('won!');
 		snake.segments.push(segment);
 
 		if(snake.segments.length > snake.size) {
