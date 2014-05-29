@@ -10,8 +10,10 @@
 	var GAMEFIELD_SIZE = 25;
 
 	var snake = {};
+	var apples = [];
 	var paused = true;
 	var countingDown = false;
+	var numApples = 3;
 
 	var modulo = function(n, m) {
 		return ((n % m) + m) % m;
@@ -22,7 +24,7 @@
 		snake.pos = [modulo((snake.pos[0] + snake.dx), GAMEFIELD_SIZE),
 					 modulo((snake.pos[1] + snake.dy), GAMEFIELD_SIZE)];
 
-		var segment = $('<div></div>');
+		var segment = $('<div class="segment"></div>');
 		segment.css({top: snake.pos[1] * CELL_SIZE, left: snake.pos[0] * CELL_SIZE});
 		$('#gamefield').append(segment);
 		snake.segments.push(segment);
@@ -53,6 +55,15 @@
 			segments: [],
 			speed: 10
 		}
+
+		for(var x = 0; x < numApples; x++) {
+			var apple = $('<div class="apple"></div>');
+			apple.css({top: Math.floor(Math.random() * GAMEFIELD_SIZE) * CELL_SIZE,
+					   left: Math.floor(Math.random() * GAMEFIELD_SIZE) * CELL_SIZE});
+			$('#gamefield').append(apple);
+			apples.push(apple);
+		}
+
 		countDown();
 		paused = true;
 		setTimeout(function() { paused = false; countingDown = false; }, 5000);
