@@ -10,12 +10,13 @@
 	var GAMEFIELD_SIZE = 25;
 
 	var snake = {};
-	
+	var paused = true;
+	var countingDown = false;
 
 	var modulo = function(n, m) {
 		return ((n % m) + m) % m;
 	}
-	var tick = function() {
+	var updateGame = function() {
 		snake.dx = snake.direction[0];
 		snake.dy = snake.direction[1];
 		snake.pos = [modulo((snake.pos[0] + snake.dx), GAMEFIELD_SIZE),
@@ -28,6 +29,11 @@
 
 		if(snake.segments.length > snake.size) {
 			snake.segments.shift().remove();
+		}
+	}
+	var tick = function() {
+		if(paused !== true) {
+			updateGame();
 		}
 
 		setTimeout(tick, 1000 / snake.speed);
@@ -47,6 +53,8 @@
 			speed: 10
 		}
 		countDown();
+		paused = true;
+		setTimeout(function() { paused = false; countingDown = false; }, 6000);
 	}
 	var handleInput = function(event) {
 		switch(event.which) {
@@ -62,9 +70,9 @@
 			case 37: // Left
 				if(snake.dx != 1) turn(-1, 0);
 			break;
-			case 32: // Space
-				resetGame();
-				break;
+			case 32:
+				if(countingDown != true) resetGame();
+			break;
 			default:
 			var x = event.which - 48; // Debug
 			if(x > 0 && x < 10) {
@@ -75,6 +83,7 @@
 		hasMoved = true;
 	}
 	var countDown = function() {
+		countingDown = true;
 		$('#gamefield p.countdown').remove();
 		$('#gamefield').append('<p class="countdown" id="three">3</p>');
 		$('#gamefield').append('<p class="countdown" id="two">2</p>');
@@ -84,7 +93,7 @@
 
 	$(document).keydown(handleInput);
 	$(resetGame);
-	setTimeout(tick, 5000);
+	$(tick);
 	</script>
 </head>
 <body>
