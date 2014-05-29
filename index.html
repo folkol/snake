@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Snake in a plane</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="jquery-1.11.1.min.js"></script>
+	<script>
+	var CELL_SIZE = 20;
+	var GAMEFIELD_SIZE = 25;
+
+	var snake = {};
+	var modulo = function(n, m) {
+		return ((n % m) + m) % m;
+	}
+	var tick = function() {
+		snake.xPos = modulo((snake.xPos + snake.dx), GAMEFIELD_SIZE);
+		snake.yPos = modulo((snake.yPos + snake.dy), GAMEFIELD_SIZE);
+
+		var segment = $('<div></div>');
+		segment.css({top: snake.yPos * CELL_SIZE, left: snake.xPos * CELL_SIZE});
+		$('#gamefield').append(segment);
+		snake.segments.push(segment);
+
+		if(snake.segments.length > snake.size) {
+			snake.segments.shift().remove();
+		}
+	}
+	var turn = function(dx, dy) {
+		snake.dx = dx;
+		snake.dy = dy;
+	}
+	var resetGame = function() {
+		$("#gamefield div").remove();
+		snake = {
+			xPos: 12,
+			yPos: 25,
+			dx: 0,
+			dy: -1,
+			size: 7,
+			segments: []
+		}
+	}
+	var handleInput = function(event) {
+		switch(event.which) {
+			case 38: // Up
+				if(snake.dy != 1) turn(0, -1);
+			break;
+			case 40: // Down
+				if(snake.dy != -1) turn(0,1);
+			break;
+			case 39: // Right
+				if(snake.dx != -1) turn(1, 0);
+			break;
+			case 37: // Left
+				if(snake.dx != 1) turn(-1, 0);
+			break;
+			case 32: // Space
+				resetGame();
+				break;
+		}
+	}
+
+	setInterval(tick, 1000/10);
+	$(document).keydown(handleInput);
+	resetGame();
+	</script>
+</head>
+<body>
+	<div id="distance"></div>
+	<div id="gamefield">
+		<p>Snake in a plane</p>
+	</div>
+</body>
+</html>
