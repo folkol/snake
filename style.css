@@ -76,23 +76,23 @@ body {
 }
 
 p#one {
-	-webkit-animation: countdown 1s 3s;
-	animation: countdown 1s 3s;
-	visibility: hidden;
-}
-p#two {
 	-webkit-animation: countdown 1s 2s;
 	animation: countdown 1s 2s;
 	visibility: hidden;
 }
-p#three {
+p#two {
 	-webkit-animation: countdown 1s 1s;
 	animation: countdown 1s 1s;
 	visibility: hidden;
 }
+p#three {
+	-webkit-animation: countdown 1s 0s;
+	animation: countdown 1s 0s;
+	visibility: hidden;
+}
 p#go {
-	-webkit-animation: countdown 2s 4s;
-	animation: countdown 2s 4s;
+	-webkit-animation: countdown 2s 3s;
+	animation: countdown 2s 3s;
 	visibility: hidden;
 }
 
@@ -101,7 +101,7 @@ p#go {
 {
 	0% {visibility: visible; opacity: 0; font-size: 200px;}
 	10% {visibility: visible; opacity: 1; font-size: 200px;}
-	75% {opacity: 1; font-size: 200px;}
+	85% {opacity: 1; font-size: 200px;}
 	100% {opacity: 0; font-size: 200px;}
 }
 
@@ -110,7 +110,7 @@ p#go {
 {
 	0% {visibility: visible; opacity: 0; font-size: 200px;}
 	10% {visibility: visible; opacity: 1; font-size: 200px;}
-	75% {opacity: 1; font-size: 200px;}
+	85% {opacity: 1; font-size: 200px;}
 	100% {opacity: 0; font-size: 200px;}
 }
 
