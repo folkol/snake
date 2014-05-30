@@ -28,6 +28,10 @@
 	var modulo = function(n, m) {
 		return ((n % m) + m) % m;
 	}
+	var cooldown = function cooldown(time) {
+		countingDown = true;
+		setTimeout(function() { countingDown = false; }, time);
+	}
 	var updateGame = function() {
 		snake.dx = snake.direction[0];
 		snake.dy = snake.direction[1];
@@ -49,6 +53,7 @@
 		}
 		if(apples.length === 0) {
 			paused = true;
+			cooldown(200);
 			$('#gamefield').append('<p class="instruction">Stage clear!</p>')
 		}
 		snake.segments.push(segment);
@@ -88,16 +93,18 @@
 		if(gameover === true) {
 			countDown();
 			paused = true;
-			setTimeout(function() { paused = false; countingDown = false; }, 5000);
+			setTimeout(function() { paused = false; }, 5000);
 			gameover = false;
 		} else {
 			paused = false;
 		}
 	}
 	var handleInput = function(event) {
-		if(paused && countingDown !== true) {
+		if(countingDown) return;
+		if(paused) {
 			resetGame();
 		}
+
 		switch(event.which) {
 			case 38: // Up
 				if(snake.dy != 1) turn(0, -1);
@@ -120,7 +127,7 @@
 		}
 	}
 	var countDown = function() {
-		countingDown = true;
+		cooldown(6000);
 		$('#gamefield p.countdown').remove();
 		$('#gamefield').append('<p class="countdown" id="three">3</p>');
 		$('#gamefield').append('<p class="countdown" id="two">2</p>');
