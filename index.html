@@ -16,7 +16,7 @@
 		direction: [0, -1],
 		size: 5,
 		segments: [],
-		speed: 3
+		speed: 5
 	}
 	var apples = [];
 	var paused = true;
@@ -25,37 +25,56 @@
 	var score = 0;
 	var gameover = true;
 
-	var modulo = function(n, m) {
-		return ((n % m) + m) % m;
-	}
 	var cooldown = function cooldown(time) {
 		countingDown = true;
 		setTimeout(function() { countingDown = false; }, time);
 	}
-	var updateGame = function() {
-		snake.dx = snake.direction[0];
-		snake.dy = snake.direction[1];
-		snake.pos = [modulo((snake.pos[0] + snake.dx), GAMEFIELD_SIZE),
-					 modulo((snake.pos[1] + snake.dy), GAMEFIELD_SIZE)];
-
-		var segment = $('<div class="segment"></div>');
-		segment.css({top: snake.pos[1] * CELL_SIZE, left: snake.pos[0] * CELL_SIZE});
-		$('#gamefield').append(segment);
+	var checkApples = function (segment) {
 		for(var x = apples.length - 1; x >= 0; x--) {
 			var apple = $(apples[x]);
 			if(apple.css('left') === segment.css('left') &&
 			   apple.css('top') === segment.css('top')) {
 				score += 1000;
-				snake.size += 1;
 				apple.remove();
 				apples.splice(x, 1);
 			}
 		}
 		if(apples.length === 0) {
+			if(snake.size <= 10) snake.size += 1;
 			paused = true;
 			cooldown(200);
 			$('#gamefield').append('<p class="instruction">Stage clear!</p>')
 		}
+	}
+	var checkAlive = function(head) {
+		var left = parseInt(head.css('left'));
+		var top = parseInt(head.css('top'));
+		//console.log('left: ' + left + ' top: ' + top + ' reference: ' + GAMEFIELD_SIZE * CELL_SIZE);
+		if(left < 0 ||
+		   left > (GAMEFIELD_SIZE - 1) * CELL_SIZE ||
+		   top < 0 ||
+		   top > (GAMEFIELD_SIZE - 1) * CELL_SIZE) {
+			alert('DEAD');
+		}
+		for(var x = 0; x < snake.segments.length; x++) {
+			var segment = $(snake.segments[x]);
+			if(segment.css('left') === head.css('left') &&
+			   segment.css('top') === head.css('top')) {
+				alert('DEAD');
+			}
+		}
+	}
+	var updateGame = function() {
+		snake.dx = snake.direction[0];
+		snake.dy = snake.direction[1];
+		snake.pos = [snake.pos[0] + snake.dx, snake.pos[1] + snake.dy];
+
+		console.log(snake.pos);
+		var segment = $('<div class="segment"></div>');
+		segment.css({top: snake.pos[1] * CELL_SIZE, left: snake.pos[0] * CELL_SIZE});
+		checkApples(segment);
+		checkAlive(segment);
+		$('#gamefield').append(segment);
 		snake.segments.push(segment);
 
 		if(snake.segments.length > snake.size) {
@@ -127,7 +146,7 @@
 		}
 	}
 	var countDown = function() {
-		cooldown(6000);
+		cooldown(5000);
 		$('#gamefield p.countdown').remove();
 		$('#gamefield').append('<p class="countdown" id="three">3</p>');
 		$('#gamefield').append('<p class="countdown" id="two">2</p>');
